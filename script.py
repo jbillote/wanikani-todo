@@ -13,6 +13,11 @@ try:
     response = requests.get(url, headers=headers)
     response.raise_for_status()
     data = response.json()
-    print(json.dumps(data, indent=2))
+    raw_reviews = response.json()['data']['reviews']
+    reviews = []
+    for review in raw_reviews:
+        if review['subject_ids']:
+            reviews.append(review['available_at'])
+    print(json.dumps(reviews, indent=2))
 except requests.exceptions.RequestException as e:
     print(e)
